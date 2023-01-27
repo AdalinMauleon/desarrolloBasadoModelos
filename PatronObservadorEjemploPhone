@@ -1,0 +1,93 @@
+import java.util.*;
+
+
+public interface Subject{
+    public void registerObserver(Observer o);
+    public void remove(Observer o);
+    public void notifyObservers();
+
+    }
+
+public interface Observer{
+    public void update(String name, String marca, int price, String description);
+
+}
+public class StoreData implements subject{
+    ArrayList<Observer> observers;
+    private String namePhone;
+    private String description;
+    private int price;
+    private String marca;
+
+    public StoreData(String name, String marca, int pr, String ds){
+        this.nameProduct = name;
+        this.marca = marca;
+        this.price = pr;
+        this.description = ds;
+        ArrayList<Observer> observers;
+        
+    }
+
+    public void registerObserver(Observer o){
+        observers.add(o);
+    }
+
+    public void remove(Observer o){
+        observers.remove(o);  
+    }
+
+    public void notifyObservers(){//No se si la implementacion debio ir en esta parte
+         for(int i=0; i<observers.size(); i++){
+            Observer observer = (Observer) observers.get(i);
+            observer.update(namePhone, marca, price, description);
+        }
+    }
+    //Se esta declarando la función en la cual se introducira un  nuevo procto
+   
+    public void availabilityChanged() {
+        notifyObservers();
+    }
+
+    
+}
+
+public class concretClient implements Observer{
+
+   
+    private String User;
+    private String mail;
+    private int key;
+
+    
+    public concretClient(String User, String mail, int key) {
+            this.User = User;
+            this.mail = mail;
+            this.key = key;
+           }
+
+
+    public void update(String nameP, String marca, int price, String description){
+        System.out.println("Client: " + User + "/n New item in stock /n Product name: " + nameP +"/nMarca:/n "+ marca + "/nPrice/n"+ price + "Description:"+ description);
+    }
+}
+
+public class PhoneStore{
+    public static void main(String[] args){
+        StoreData phone1 = new StoreData("Iphone 8","Apple", 6000, "u tamaño es 157.2 x 75.3 x 7.9 mm y su peso es 170 pulgadas.");
+        StoreData phone2 = new StoreData("Iphone XR","Apple", 8000, "64 GB, Azul.");
+        StoreData phone3 = new StoreData("Iphone 14 Pro Max","Apple", 9000, "Excelente calidad.");
+        concretClient client = new concretClient(storeData);
+
+        
+        concretClient client1 = new concretClient("Andres","andreslopez18",123);
+        concretClient client2 = new concretClient("Tania","tanimendez1",444);
+        concretClient client3 = new concretClient("Margaret","margaretfabian2000",234);
+
+        phone1.registerObserver(client1);
+        phone2.registerObserver(client2);
+        phone3.registerObserver(client3);
+
+        phone1.availabilityChanged(); 
+        phone1.remove(client3);
+    }
+}
